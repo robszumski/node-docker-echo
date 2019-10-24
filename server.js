@@ -28,7 +28,7 @@ const server = http.createServer((req, res) => {
         fs.createWriteStream('./cpu').write(query.cpu);
     } else if(fs.existsSync('./cpu')) {
         cpu = fs.readFileSync('./cpu', 'utf8');
-        console.log(`Read CPU as ${cpu}`);
+        //console.log(`Read CPU as ${cpu}`);
     }
 
     if(query.ram) {
@@ -46,7 +46,7 @@ const server = http.createServer((req, res) => {
         fs.createWriteStream('./ram').write(query.ram);
     } else if (fs.existsSync('./ram')) {
         ram = fs.readFileSync('./ram', 'utf8');
-        console.log(`Read RAM as ${ram}`);
+        //console.log(`Read RAM as ${ram}`);
     }
 
     // Return parameters
