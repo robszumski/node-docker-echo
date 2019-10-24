@@ -52,8 +52,8 @@ const server = http.createServer((req, res) => {
     // Return parameters
     var obj = {
         'cpu': cpu,
-        'ram': ram,
-        'env': process.env
+        'ram': ram
+        //'env': process.env
     };
 
     res.statusCode = 200;
