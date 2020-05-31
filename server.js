@@ -13,7 +13,7 @@ const server = http.createServer((req, res) => {
     var ram;
 
     // Write parameters if set, else read
-    if(query.cpu) {
+    if(query.cpu && query.cpu >= -25) {
         console.log(`Writing CPU as ${query.cpu}`);
         cpu = query.cpu;
 
@@ -31,7 +31,7 @@ const server = http.createServer((req, res) => {
         //console.log(`Read CPU as ${cpu}`);
     }
 
-    if(query.ram) {
+    if(query.ram && query.ram >= -1000) {
         console.log(`Writing RAM as ${query.ram}`);
         ram = query.ram;
 
