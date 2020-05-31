@@ -1,31 +1,73 @@
 # node-docker-echo
-Example node.js echo environment variables in docker.
 
-View on [docker hub](https://hub.docker.com/r/styfle/node-docker-echo/)
+Track CPU and RAM as submitted and recorded as GET parameters.
 
-## Usage
+## Run with Kubernetes
 
 ###
 ```
-docker run node-docker-echo -p 3000:3000
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: echo
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: echo
+        type: 'web'
+      annotations:
+        scheduler.alpha.kubernetes.io/affinity: >
+          {
+            "nodeAffinity": {
+              "requiredDuringSchedulingIgnoredDuringExecution": {
+                "nodeSelectorTerms": [
+                  {
+                    "matchExpressions": [
+                      {
+                        "key": "master",
+                        "operator": "DoesNotExist"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+    spec:
+      containers:
+      - name: echo
+        image: quay.io/robszumski/echo-server:latest
+        ports: 
+        - containerPort: 3000
+          name: web
+          protocol: TCP
+        readinessProbe:
+         httpGet:
+           path: /
+           port: 3000
+           scheme: HTTP
+        livenessProbe:
+         initialDelaySeconds: 10
+         timeoutSeconds: 1
+         httpGet:
+           path: /
+           port: 3000
+           scheme: HTTP
+        imagePullPolicy: Always
 ```
 
-### Visit URL
+### Write Values
 ```sh
-curl http://localhost:3000/?message=wat
+curl http://example.com/path?cpu=100&ram=12345
 ```
 
-### Output
+### Read Values
+
 ```json
 {
-  "message": "wat",
-  "env": {
-    "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-    "HOSTNAME": "083bf20472c9",
-    "TERM": "xterm",
-    "VERSION": "v6.2.1",
-    "NPM_VERSION": "3",
-    "HOME": "/root"
-  }
+  "cpu":"100%",
+  "ram":"12345.00"
 }
 ```
