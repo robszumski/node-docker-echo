@@ -66,7 +66,7 @@ const server = http.createServer((req, res) => {
         today_ram = fs.readFileSync('./' + today + '-ram', 'utf8');
         yesterday_ram = fs.readFileSync('./' + yesterday + '-ram', 'utf8');
         change = today_ram - yesterday_ram;
-        change = change.toString();
+        change = change.toFixed(3).toString();
         if(debug) console.log(`Read RAM change as ${today_ram} (day ${today}) minus ${yesterday_ram} (day ${yesterday})= ${change}`);
     } else {
         if(debug) console.log(`Can't read RAM change, no history`);
