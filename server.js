@@ -8,6 +8,7 @@ const port = 3000;
 const server = http.createServer((req, res) => {
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
+    var cache_dir = './cache/';
 
     var debug = true;
 
@@ -17,6 +18,7 @@ const server = http.createServer((req, res) => {
     var yesterday_ram;
     var change;
 
+    // Date logic
     var today = new Date().getDay();
     var yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
@@ -30,16 +32,16 @@ const server = http.createServer((req, res) => {
         cpu = query.cpu;
 
         //Clear file
-        fs.unlink('./' + today + '-cpu', (err) => {
+        fs.unlink(cache_dir + today + '-cpu', (err) => {
           if (err) {
             console.error(err)
             return
           }
         })
 
-        fs.createWriteStream('./' + today + '-cpu').write(query.cpu);
-    } else if(fs.existsSync('./' + today + '-cpu')) {
-        cpu = fs.readFileSync('./' + today + '-cpu', 'utf8');
+        fs.createWriteStream(cache_dir + today + '-cpu').write(query.cpu);
+    } else if(fs.existsSync(cache_dir + today + '-cpu')) {
+        cpu = fs.readFileSync(cache_dir + today + '-cpu', 'utf8');
         if(debug) console.log(`Read CPU as ${cpu}`);
     }
 
@@ -48,23 +50,23 @@ const server = http.createServer((req, res) => {
         ram = query.ram;
 
         //Clear file
-        fs.unlink('./' + today + '-ram', (err) => {
+        fs.unlink(cache_dir + today + '-ram', (err) => {
           if (err) {
             console.error(err)
             return
           }
         })
 
-        fs.createWriteStream('./' + today + '-ram').write(query.ram);
-    } else if (fs.existsSync('./' + today + '-ram')) {
-        ram = fs.readFileSync('./' + today + '-ram', 'utf8');
+        fs.createWriteStream(cache_dir + today + '-ram').write(query.ram);
+    } else if (fs.existsSync(cache_dir + today + '-ram')) {
+        ram = fs.readFileSync(cache_dir + today + '-ram', 'utf8');
         if(debug) console.log(`Read RAM as ${ram}`);
     }
 
     // Calculate change
-    if (fs.existsSync('./' + today + '-ram') && fs.existsSync('./' + yesterday + '-ram')) {
-        today_ram = fs.readFileSync('./' + today + '-ram', 'utf8');
-        yesterday_ram = fs.readFileSync('./' + yesterday + '-ram', 'utf8');
+    if (fs.existsSync(cache_dir + today + '-ram') && fs.existsSync('./' + yesterday + '-ram')) {
+        today_ram = fs.readFileSync(cache_dir + today + '-ram', 'utf8');
+        yesterday_ram = fs.readFileSync(cache_dir + yesterday + '-ram', 'utf8');
         change = today_ram - yesterday_ram;
         change = change.toFixed(3).toString();
         if(debug) console.log(`Read RAM change as ${today_ram} (day ${today}) minus ${yesterday_ram} (day ${yesterday})= ${change}`);
