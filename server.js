@@ -39,7 +39,7 @@ const server = http.createServer((req, res) => {
           }
         })
 
-        fs.createWriteStream(cache_dir + today + '-cpu').write(query.cpu);
+        fs.createWriteStream(cache_dir + today + '-cpu').on('error', function (err) {console.log(err);}).write(query.cpu);
     } else if(fs.existsSync(cache_dir + today + '-cpu')) {
         cpu = fs.readFileSync(cache_dir + today + '-cpu', 'utf8');
         if(debug) console.log(`Read CPU as ${cpu}`);
@@ -57,7 +57,7 @@ const server = http.createServer((req, res) => {
           }
         })
 
-        fs.createWriteStream(cache_dir + today + '-ram').write(query.ram);
+        fs.createWriteStream(cache_dir + today + '-ram').on('error', function (err) {console.log(err);}).write(query.ram);
     } else if (fs.existsSync(cache_dir + today + '-ram')) {
         ram = fs.readFileSync(cache_dir + today + '-ram', 'utf8');
         if(debug) console.log(`Read RAM as ${ram}`);
