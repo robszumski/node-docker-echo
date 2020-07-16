@@ -64,7 +64,7 @@ const server = http.createServer((req, res) => {
     }
 
     // Calculate change
-    if (fs.existsSync(cache_dir + today + '-ram') && fs.existsSync('./' + yesterday + '-ram')) {
+    if (fs.existsSync(cache_dir + today + '-ram') && fs.existsSync(cache_dir + yesterday + '-ram')) {
         today_ram = fs.readFileSync(cache_dir + today + '-ram', 'utf8');
         yesterday_ram = fs.readFileSync(cache_dir + yesterday + '-ram', 'utf8');
         change = today_ram - yesterday_ram;
