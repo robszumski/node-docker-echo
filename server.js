@@ -18,9 +18,14 @@ const server = http.createServer((req, res) => {
     var yesterday_ram;
     var change;
 
+    // Set Timezone
+    var tz = new Date().toLocaleString("en-US", {
+        timeZone: "America/New_York"
+    });
+
     // Date logic
-    var today = new Date().getDay();
-    var yesterday = new Date();
+    var today = new Date(tz).getDay();
+    var yesterday = new Date(tz);
     yesterday.setDate(yesterday.getDate() - 1);
     yesterday = yesterday.getDay();
     if (yesterday == 0 || yesterday == 7) yesterday = 6; //if weekend, set to friday
