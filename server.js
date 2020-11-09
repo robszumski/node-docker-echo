@@ -1,6 +1,7 @@
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
+const Client = require('kubernetes-client').Client
 
 const hostname = '0.0.0.0';
 const port = 3000;
@@ -19,8 +20,8 @@ const server = http.createServer((req, res) => {
     var change;
 
     // Experiement with Kubernetes
-    const client = new Client({ version: '1.13' })
     try {
+        const client = new Client({ version: '1.13' })
         // Update the deployment
         // Change the image from nginx:1.7.9 to nginx:1.9.1
         // const updateImage = await client.apis.apps.v1.ns('default').deploy('nginx-deployment').patch({
