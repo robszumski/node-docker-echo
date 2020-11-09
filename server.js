@@ -1,7 +1,6 @@
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
-const Client = require('kubernetes-client').Client
 
 const hostname = '0.0.0.0';
 const port = 3000;
