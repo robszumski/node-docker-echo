@@ -5,6 +5,8 @@ const fs = require('fs');
 const hostname = '0.0.0.0';
 const port = 3000;
 
+const client = new Client({ version: '1.13' })
+
 const server = http.createServer((req, res) => {
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
@@ -17,6 +19,28 @@ const server = http.createServer((req, res) => {
     var today_ram;
     var yesterday_ram;
     var change;
+
+    // Experiement with Kubernetes
+    try {
+        // Update the deployment
+        // Change the image from nginx:1.7.9 to nginx:1.9.1
+        // const updateImage = await client.apis.apps.v1.ns('default').deploy('nginx-deployment').patch({
+        //   body: {
+        //     spec: {
+        //       template: {
+        //         spec: {
+        //           containers: [{
+        //             name: 'nginx',
+        //             image: 'nginx:1.9.1'
+        //           }]
+        //         }
+        //       }
+        //     }
+        //   }
+        // })
+        const deploy = await client.apis.apps.v1.ns('public').deploy('echo').get()
+        console.log('Read: ', deploy)
+    }
 
     // Set Timezone
     var tz = new Date().toLocaleString("en-US", {
