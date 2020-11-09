@@ -19,15 +19,6 @@ const server = http.createServer((req, res) => {
     var yesterday_ram;
     var change;
 
-    // Experiement with Kubernetes
-    (async ()=>{
-        try {
-            const client = new Client({ version: '1.13' });
-            const deploy = await client.apis.apps.v1.ns('public').deploy('echo').get();
-            console.log('Read: ', deploy);
-        }
-    })();
-
     // Set Timezone
     var tz = new Date().toLocaleString("en-US", {
         timeZone: "America/New_York"
